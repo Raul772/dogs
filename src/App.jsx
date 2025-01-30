@@ -4,12 +4,13 @@ import Footer from "./Components/Footer";
 import Header from "./Components/Header";
 import Home from "./Components/Home";
 import Login from "./Components/Login/Login";
+import { UserStorage } from "./UserContext";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <div>
+        <UserStorage>
           <Header />
           <Routes>
             <Route path="/" element={<Home />} />
@@ -17,7 +18,7 @@ function App() {
             <Route path="*" element={<h1>Página não existe</h1>} />
           </Routes>
           <Footer />
-        </div>
+        </UserStorage>
       </BrowserRouter>
     </>
   );
