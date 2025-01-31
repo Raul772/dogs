@@ -4,19 +4,19 @@ import useForm from "../../Hooks/useForm";
 import { UserContext } from "../../UserContext";
 import Button from "../Forms/Button";
 import Input from "../Forms/Input";
+import Error from "../Helper/Error";
+import styles from "./LoginForm.module.css";
+import stylesBtn from "../Forms/Button.module.css";
 
 const LoginForm = () => {
-  
-  const { userLogin } = useContext(UserContext);
+  const { getUser, userLogin, error, loading, login } = useContext(UserContext);
   const username = useForm();
   const password = useForm();
 
-
   useEffect(() => {
     const token = window.localStorage.getItem("token");
-    if (!token) getUser();
+    if (token) getUser();
   }, []);
-
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -26,16 +26,25 @@ const LoginForm = () => {
   }
 
   return (
-    <section>
-      <h1>Login</h1>
-      <form action="" onSubmit={handleSubmit}>
+    <section className="animeLeft">
+      <h1 className="title">Login</h1>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <Input type="text" name="username" label="Usuário" {...username} />
         <Input type="password" name="password" label="Senha" {...password} />
-
-        <Button>Entrar</Button>
+        <Error>{error}</Error>
+        <Button disabled={!!loading}>Entrar</Button>
       </form>
 
-      <Link to="/login/criar">Cadastro</Link>
+      <Link className={styles.perdeu} to="/login/perdeu">
+        Perdeu a senha?
+      </Link>
+      <div className={styles.cadastro}>
+        <h2 className={styles.subtitle}>Cadastre-se</h2>
+        <p>Ainda não possui conta? Cadastre-se no site.</p>
+      </div>
+      <Link className={stylesBtn.button} to="/login/criar">
+        Cadastro
+      </Link>
     </section>
   );
 };

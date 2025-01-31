@@ -1,5 +1,6 @@
-import { createContext, useState } from "react";
-import { TOKEN_POST, USER_GET } from "./api";
+import { createContext, useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { TOKEN_POST, TOKEN_VALIDATE_POST, USER_GET } from "./api";
 
 export const UserContext = createContext();
 
@@ -8,6 +9,19 @@ export const UserStorage = ({ children }) => {
   const [login, setLogin] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
+
+  const userLogout = useCallback(
+    async function () {
+      setData(null);
+      setError(null);
+      setLoading(false);
+      setLogin(false);
+      window.localStorage.removeItem("token");
+      navigate("/login");
+    },
+    [navigate]
+  );
 
   async function getUser(token) {
     try {
@@ -28,21 +42,60 @@ export const UserStorage = ({ children }) => {
     const { url, options } = TOKEN_POST({ username, password });
 
     try {
+      setError(null);
+      setLoading(true);
+
       const response = await fetch(url, options);
-      if (!response.ok) throw new Error("Erro ao processar requisição");
+
+      if (!response.ok) throw new Error("Erro: " + response.statusText);
 
       const { token } = await response.json();
 
       window.localStorage.setItem("token", token);
-      getUser(token);
+      await getUser(token);
+
+      navigate("/conta");
     } catch (error) {
-      console.log(error);
+      setError(error.message);
+      setLogin(false);
+    } finally {
+      setLoading(false);
     }
   }
 
+  useEffect(() => {
+    async function autoLogin() {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const { url, options } = TOKEN_VALIDATE_POST(token);
+
+        try {
+          setError(null);
+          setLoading(true);
+          const response = await fetch(url, options);
+
+          if (!response.ok) throw new Error("Token inválido");
+
+          await getUser(token);
+        } catch (e) {
+          userLogout();
+        } finally {
+          setLoading(false);
+        }
+      }
+    }
+
+    autoLogin();
+  }, [userLogout]);
+
   const value = {
     userLogin,
+    userLogout,
+    getUser,
     data,
+    error,
+    loading,
+    login,
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
