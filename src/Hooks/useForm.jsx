@@ -2,8 +2,13 @@ import { useState } from "react";
 
 const types = {
   email: {
-    regex: /^[a-z0-9.+-]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i,
+    regex: /^[a-z0-9.+-]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i,
     message: "E-mail inválido",
+  },
+  password: {
+    regex: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+    message:
+      "A senha precisa possuir no mínimo um caracter maiúsculo, um caracter minúsculo, um dígito, um caracter especial e 8 caracteres no total.",
   },
 };
 
@@ -12,7 +17,7 @@ const useForm = (type) => {
   const [error, setError] = useState(null);
 
   function validate(value) {
-    if (!type) return true;
+    if (type === false) return true;
 
     if (value.length === 0) {
       setError("Preencha um valor");
