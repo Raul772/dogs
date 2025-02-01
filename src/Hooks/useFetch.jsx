@@ -15,6 +15,7 @@ const useFetch = () => {
 
       response = await fetch(url, options);
       dataResponse = await response.json();
+      
       if (!response.ok) throw new Error(dataResponse.message);
     } catch (error) {
       dataResponse = null;
@@ -24,7 +25,7 @@ const useFetch = () => {
       setLoading(false);
       return { response, dataResponse };
     }
-  });
+  }, []);
 
   return {
     data,
