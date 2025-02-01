@@ -15,7 +15,6 @@ const useFetch = () => {
 
       response = await fetch(url, options);
       dataResponse = await response.json();
-      console.log(dataResponse);
       if (!response.ok) throw new Error(dataResponse.message);
     } catch (error) {
       dataResponse = null;
