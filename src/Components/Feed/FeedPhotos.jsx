@@ -3,8 +3,8 @@ import { PHOTOS_GET } from "../../api";
 import useFetch from "../../Hooks/useFetch";
 import Error from "../Helper/Error";
 import { Loading } from "../Helper/Loading";
-import { FeedPhotosItem } from "./FeedPhotosItem";
 import styles from "./FeedPhotos.module.css";
+import { FeedPhotosItem } from "./FeedPhotosItem";
 
 export const FeedPhotos = ({ setModalPhoto }) => {
   const { data, request, error, loading } = useFetch();
