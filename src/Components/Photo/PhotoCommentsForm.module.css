@@ -5,6 +5,10 @@
   margin: 1rem;
 }
 
+.single.form {
+  margin: 1rem 0px 0px 0px;
+}
+
 .textArea {
   display: block;
   font-size: 1rem;

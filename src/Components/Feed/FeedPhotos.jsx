@@ -10,7 +10,7 @@ export const FeedPhotos = ({ setModalPhoto, user, page, setInfinite }) => {
   const { data, request, error, loading } = useFetch();
 
   useEffect(() => {
-    const total = 3;
+    const total = 6;
     async function fetchPhotos() {
       const { url, options } = PHOTOS_GET({
         page: page,

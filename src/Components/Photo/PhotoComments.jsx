@@ -1,9 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../../UserContext";
-import { PhotoCommentsForm } from "./PhotoCommentsForm";
 import styles from "./PhotoComments.module.css";
+import { PhotoCommentsForm } from "./PhotoCommentsForm";
 
-export const PhotoComments = ({ id, comments }) => {
+export const PhotoComments = ({ id, comments, single }) => {
   const [commentsList, setCommentsList] = useState(() => comments);
   const commentsSection = useRef();
   const { login } = useContext(UserContext);
@@ -14,7 +14,7 @@ export const PhotoComments = ({ id, comments }) => {
 
   return (
     <>
-      <ul ref={commentsSection} className={styles.comments}>
+      <ul ref={commentsSection} className={`${styles.comments} ${single ? styles.single : ''}`}>
         {commentsList.map((comment) => (
           <li key={comment.comment_ID}>
             <b>{comment.comment_author}: </b>
@@ -22,7 +22,7 @@ export const PhotoComments = ({ id, comments }) => {
           </li>
         ))}
       </ul>
-      {login && <PhotoCommentsForm id={id} setCommentsList={setCommentsList} />}
+      {login && <PhotoCommentsForm single={single} id={id} setCommentsList={setCommentsList} />}
     </>
   );
 };

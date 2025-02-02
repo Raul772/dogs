@@ -1,7 +1,7 @@
 .comments {
   overflow-y: auto;
   word-break: break-word;
-  padding: 0 2rem;
+  padding: 0px 2rem;
 }
 
 .comments li {
@@ -9,3 +9,6 @@
   line-height: 1.2;
 }
 
+.single.comments {
+  padding: 0px;
+}
