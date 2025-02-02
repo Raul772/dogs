@@ -33,7 +33,7 @@ const LoginForm = () => {
       <form className={styles.form} onSubmit={handleSubmit}>
         <Input type="text" name="username" label="Usuário" {...username} />
         <Input type="password" name="password" label="Senha" {...password} />
-        <Error>{error}</Error>
+        <Error>{error && "Dados incorretos."}</Error>
         <Button disabled={!!loading}>Entrar</Button>
       </form>
 
